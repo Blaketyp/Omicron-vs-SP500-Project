@@ -1,0 +1,17 @@
+--Due to the low amount of data that is available for omicron cases, these are all data that is currently available, as of 12/12/2021
+--Showing sum of total omicron cases worldwide increase in percentage based on dates
+create view omicron_rise as
+select day,sum(omicron_percentage) as Sum_omicron_percentage from omicron
+group by day
+order by day asc
+
+--Joining days when omicron cases increase with closing index of S&P500
+create view omicron_sp500_closing_index as
+select
+  omicron_rise.day, omicron_rise.Sum_omicron_percentage,
+  sp500.close
+from
+ omicron_rise
+inner join
+ sp500 on omicron_rise.day = sp500.date
+order by day asc
